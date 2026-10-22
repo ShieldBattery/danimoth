@@ -1,0 +1,13 @@
+native/target
+native/index.node
+prebuilds/
+**/node_modules
+**/.DS_Store
+.idea
+npm-debug.log*
+
+# The Discord Social SDK comes from the Discord Developer Portal and is never committed here. Keep a
+# local copy under sdk/; the patterns below also catch its files anywhere else in the tree.
+sdk/
+**/discord_partner_sdk.*
+**/discordpp.h

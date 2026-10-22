@@ -1,0 +1,34 @@
+{
+  "name": "@shieldbattery/danimoth",
+  "version": "0.1.0",
+  "description": "Rust-based Node.js native module wrapping the Discord Social SDK",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "build": "cd native && cargo-cp-artifact -nc index.node -- cargo build --target=x86_64-pc-windows-msvc --message-format=json-render-diagnostics",
+    "build-debug": "pnpm run build",
+    "build-release": "pnpm run build --release",
+    "tag-prebuild": "node ./tag-prebuild.js",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "cd native && cargo test && cd .. && pnpm run build && pnpm run tag-prebuild && node --test"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShieldBattery/danimoth.git"
+  },
+  "keywords": [
+    "discord",
+    "rich-presence"
+  ],
+  "bugs": {
+    "url": "https://github.com/ShieldBattery/danimoth/issues"
+  },
+  "homepage": "https://github.com/ShieldBattery/danimoth#readme",
+  "devDependencies": {
+    "cargo-cp-artifact": "^0.1.9",
+    "prettier": "^3.9.10"
+  },
+  "packageManager": "pnpm@12.14.0+sha512.c18ba6d87993d3d164cb5e8948f32b2c06ee854487e06cd8d86781342fb3e5bb4634367034711e86802baa9c37bea906ce1929ad08d70884c97d801df13389a6"
+}

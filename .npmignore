@@ -1,0 +1,12 @@
+native/target
+native/index.node
+**/*~
+.github
+.vscode
+.idea
+test
+
+# The Discord Social SDK is never published in this package.
+sdk/
+**/discord_partner_sdk.*
+**/discordpp.h
