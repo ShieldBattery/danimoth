@@ -11,3 +11,5 @@ npm-debug.log*
 sdk/
 **/discord_partner_sdk.*
 **/discordpp.h
+**/cdiscord.h
+**/discord_krisp.*
