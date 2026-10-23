@@ -1,6 +1,6 @@
 {
   "name": "@shieldbattery/danimoth",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Rust-based Node.js native module wrapping the Discord Social SDK",
   "main": "index.js",
   "types": "index.d.ts",

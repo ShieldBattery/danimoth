@@ -2,7 +2,7 @@
 name = "danimoth"
 # Kept equal to the version in package.json: `version()` reports this one, and the tests check
 # that the two match.
-version = "0.1.0"
+version = "0.1.1"
 description = "Rust-based Node.js native module wrapping the Discord Social SDK"
 license = "MIT"
 edition = "2024"
