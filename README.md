@@ -88,11 +88,15 @@ This runs the Rust tests, builds the module, and runs the Node tests in `test/` 
 The tests in `test/sdk.test.js` load the real SDK from the local copy under `sdk/` (or from the path
 in `DANIMOTH_SDK_DLL`) and are skipped when it isn't there, as in CI. They don't connect to Discord.
 
-## Versioning
+## Releasing
 
-Releases are tagged with the bare version (`1.0.0`, not `v1.0.0`), matching the other ShieldBattery
-native modules. The version in `native/Cargo.toml` stays equal to the one in `package.json`, and
-the tests fail if they differ. The release workflow (publishing and code signing) isn't set up yet.
+Run the "Release package" workflow from the Actions tab with the new version number. It sets the
+version in `package.json` and `native/Cargo.toml` (kept equal; the tests fail if they differ), runs
+the tests, builds the release binary, publishes to npm, and pushes a "Version X" commit and a tag
+with the bare version (`1.0.0`, not `v1.0.0`), matching the other ShieldBattery native modules.
+
+The workflow publishes as an npm trusted publisher through GitHub's OIDC token, so no npm token is
+stored in the repo or its secrets. The binary isn't code signed yet.
 
 ## License
 

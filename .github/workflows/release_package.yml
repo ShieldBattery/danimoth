@@ -1,0 +1,79 @@
+name: Release package
+
+on:
+  workflow_dispatch:
+    inputs:
+      release-version:
+        description: 'New version number (e.g. 1.0.0)'
+        required: true
+
+permissions:
+  # Pushes the version commit and tag.
+  contents: write
+  # Publishes to npm as a trusted publisher, with no stored token.
+  id-token: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    env:
+      NEW_VERSION: ${{ github.event.inputs.release-version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Using Node.js 24.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24.x'
+          cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org'
+
+      # Trusted publishing needs npm 11.5.1 or later.
+      - name: Update npm
+        run: npm install -g npm@11
+
+      - name: Install JS dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Git configuration
+        run: |
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "GitHub Actions"
+
+      - name: Set version
+        shell: pwsh
+        run: |
+          npm --no-git-tag-version version $env:NEW_VERSION
+          # The crate's version is kept equal to the package's; the tests check it.
+          $cargoToml = Get-Content native/Cargo.toml -Raw
+          $updated = [regex]::new('(?m)^version = "[^"]*"').Replace($cargoToml, "version = `"$env:NEW_VERSION`"", 1)
+          Set-Content native/Cargo.toml $updated -NoNewline
+
+      - name: Tests
+        run: pnpm test
+
+      - name: Compile .node
+        run: pnpm run build-release
+
+      # TODO(notenbrood): sign native/index.node here once signing for the native modules is set up.
+
+      - name: Tag .node as prebuild
+        run: pnpm run tag-prebuild
+
+      - name: Commit changed files and create tag
+        run: |
+          git add package.json native/Cargo.toml native/Cargo.lock
+          git commit -m "Version ${{ env.NEW_VERSION }}"
+          git tag ${{ env.NEW_VERSION }}
+
+      - name: Publish
+        run: npm publish
+
+      - name: Push changes to repository
+        run: git push origin HEAD:${{ github.ref_name }} refs/tags/${{ env.NEW_VERSION }}
