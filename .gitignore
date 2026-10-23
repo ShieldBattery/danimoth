@@ -13,3 +13,7 @@ sdk/
 **/discordpp.h
 **/cdiscord.h
 **/discord_krisp.*
+
+# Secrets never belong in this repo; keep any local configuration that holds them out of git.
+.env
+.env.*

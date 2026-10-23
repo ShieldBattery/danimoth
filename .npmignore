@@ -12,3 +12,5 @@ sdk/
 **/discordpp.h
 **/cdiscord.h
 **/discord_krisp.*
+.env
+.env.*
