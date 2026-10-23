@@ -14,6 +14,9 @@
     "test": "cd native && cargo test && cd .. && pnpm run build && pnpm run tag-prebuild && node --test"
   },
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ShieldBattery/danimoth.git"
